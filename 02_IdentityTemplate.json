@@ -181,7 +181,7 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
               "fileUris": [
-                "https://<yourStorageAccountName>.blob.core.windows.net/<yourContainerName>/set_agent_registry.ps1"
+                "https://raw.githubusercontent.com/ramchips/az140-rvinthecloud/refs/heads/main/set_agent_registry.ps1"
               ],
               "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File set_agent_registry.ps1"
             },
