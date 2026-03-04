@@ -175,19 +175,21 @@
                 "[resourceId('Microsoft.Compute/virtualMachines/extensions', concat('vm-dc-', parameters('Environment'),'-', parameters('LocationAbbr'),'-0'), 'DSC')]"
             ],
             "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.10",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "fileUris": [
-                "https://raw.githubusercontent.com/ramchips/az140-rvinthecloud/refs/heads/main/set_agent_registry.ps1"
-              ],
-              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File set_agent_registry.ps1"
-            },
-            "protectedSettings": {
-              // Use protected settings if your script contains sensitive information (e.g., SAS tokens for private blobs)
-              // "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File set_agent_registry.ps1"
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.10",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                  "fileUris": [
+                    "https://raw.githubusercontent.com/ramchips/az140-rvinthecloud/refs/heads/main/set_agent_registry.ps1"
+                  ],
+                  "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File set_agent_registry.ps1"
+                },
+                "protectedSettings": {
+                    "Items": {
+                        "VmPassword": "[parameters('VmPassword')]"
+                    }
+                }
             }
         },
         {
