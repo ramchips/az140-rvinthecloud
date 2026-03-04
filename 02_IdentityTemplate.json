@@ -165,16 +165,29 @@
             }
         },
         {
-        "comments": "---------- DSC Dependency ----------",
+          "comments": "---------- DSC Dependency ----------",
           "type": "Microsoft.Compute/virtualMachines/extensions",
           "apiVersion": "2023-09-01",
-          "name": "RunCommand",
+          "name": "[concat('vm-dc-', parameters('Environment'),'-', parameters('LocationAbbr'),'-1/DSC')]",
+          "location": "[parameters('location')]",
+            "dependsOn": [
+                "vmLoop",
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', concat('vm-dc-', parameters('Environment'),'-', parameters('LocationAbbr'),'-0'), 'DSC')]"
+            ],
           "properties": {
             "publisher": "Microsoft.Compute",
             "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.0",
+            "typeHandlerVersion": "1.10",
+            "autoUpgradeMinorVersion": true,
             "settings": {
-              "commandToExecute": "Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\WindowsAzureGuestAgent" -Name DependOnService -Type MultiString -Value DNS"
+              "fileUris": [
+                "https://<yourStorageAccountName>.blob.core.windows.net/<yourContainerName>/set_agent_registry.ps1"
+              ],
+              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File set_agent_registry.ps1"
+            },
+            "protectedSettings": {
+              // Use protected settings if your script contains sensitive information (e.g., SAS tokens for private blobs)
+              // "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File set_agent_registry.ps1"
             }
           }
         },
