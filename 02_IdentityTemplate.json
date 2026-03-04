@@ -168,7 +168,7 @@
             "comments": "---------- DSC Dependency ----------",
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2023-09-01",
-            "name": "[concat('vm-dc-', parameters('Environment'),'-', parameters('LocationAbbr'),'-1/DSC')]",
+            "name": "[concat(variables('vmName'),'/', 'ScriptA')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "vmLoop",
@@ -190,6 +190,32 @@
                         "VmPassword": "[parameters('VmPassword')]"
                     }
                 }
+            }
+        },
+        {
+            "comments": "---------- Remove DSC Dependency Script ----------",
+            "type": "Microsoft.Resources/deploymentScripts",
+            "apiVersion": "2020-10-01",
+            "name": "RemoveScriptA",
+            "location": "[parameters('location')]",
+            "kind": "AzureCLI",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('vmName'),'ScriptA']"
+            ],
+            "properties": {
+                "forceUpdateTag": "[parameters('utcValue')]", // To force run script on redeployment
+                "AzCliVersion": "2.2.0",
+                "timeout": "PT30M",
+                "arguments": "[concat('vm-dc-', parameters('Environment'),'-', parameters('LocationAbbr'),'-0'), ' ', resourceGroup().name)]",
+                "scriptContent": "az vm extension delete -g $2 --vm-name $1 -n ScriptA", // Az CLI Command to remove an extension
+                "cleanupPreference": "OnSuccess",
+                "retentionInterval": "P1D"
             }
         },
         {
