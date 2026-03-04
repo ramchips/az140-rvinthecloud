@@ -187,8 +187,7 @@
                 },
                 "settings": {
                     "wmfVersion": "latest",
-                    "modulesUrl": "https://github.com/microsoft/WhatTheHack/blob/master/037-AzureVirtualDesktop/Student/Resources/dsc/ActiveDirectoryReplica.zip?raw=true",
-                    "modulesUrl": "https://github.com/microsoft/WhatTheHack/blob/master/037-AzureVirtualDesktop/Student/Resources/dsc/ActiveDirectoryReplica.zip?raw=true",
+                    "modulesUrl": "https://raw.githubusercontent.com/ramchips/az140-rvinthecloud/refs/heads/main/ActiveDirectoryReplica.zip?raw=true",
                     "configurationFunction": "ActiveDirectoryReplica.ps1\\ActiveDirectoryReplica",
                     "properties": {
                         "Domain": "[parameters('Domain')]",
