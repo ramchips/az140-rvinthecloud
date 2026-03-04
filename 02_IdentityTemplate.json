@@ -165,6 +165,20 @@
             }
         },
         {
+        "comments": "---------- DSC Dependency ----------",
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "apiVersion": "2023-09-01",
+          "name": "RunCommand",
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.0",
+            "settings": {
+              "commandToExecute": "Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\WindowsAzureGuestAgent" -Name DependOnService -Type MultiString -Value DNS"
+            }
+          }
+        },
+        {
             "comments": "---------- DSC EXTENSION > DC 02 ----------",
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat('vm-dc-', parameters('Environment'),'-', parameters('LocationAbbr'),'-1/DSC')]",
